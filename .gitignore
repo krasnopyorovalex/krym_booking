@@ -1,0 +1,17 @@
+/node_modules
+/public/hot
+/public/storage
+/storage/*.key
+/storage/debugbar
+/vendor
+/.idea
+/config/debugbar.php
+.env
+.env.backup
+.phpunit.result.cache
+.phpstorm.meta.php
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+_ide_helper.php
