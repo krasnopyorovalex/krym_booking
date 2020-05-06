@@ -14,3 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', 'SiteController')->name('home');
+
+foreach (glob(app_path('Domain/**/routes.php')) as $item) {
+    require $item;
+}

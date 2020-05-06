@@ -1,0 +1,71 @@
+import ModalBooking from "../modal/modal-booking";
+import ModalBooked from "../modal/modal-booked";
+
+const SCROLL_BOOKING_DEFLECTION = 2;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const booking = document.querySelector('.booking');
+    if (booking) {
+
+        const bookingBody = booking.querySelector('.booking-body');
+        const bookingBodyOffsetLeft = bookingBody.offsetLeft;
+        booking.addEventListener('scroll', function (event) {
+            const scrollLeft = event.currentTarget.scrollLeft;
+
+            if (bookingBodyOffsetLeft < scrollLeft + SCROLL_BOOKING_DEFLECTION) {
+                return booking.classList.add('is-sticky');
+            } else {
+                return booking.classList.remove('is-sticky');
+            }
+        });
+
+        const categories = booking.querySelectorAll('.booking-body-category .bb-name');
+        if (categories.length) {
+            const tasksLength = categories.length;
+
+            for (let i = 0; i < tasksLength; i++) {
+                categories[i].addEventListener("click", (event) => event.currentTarget.closest('.booking-body-category').classList.toggle('active'));
+            }
+        }
+
+        const modalBooking = new ModalBooking();
+        modalBooking.handleHide();
+
+        const modalBooked = new ModalBooked();
+
+        const bbFree = booking.querySelectorAll('.booking-body-category-rooms .bb-free');
+        if (bbFree.length) {
+            const bbFreeLength = bbFree.length;
+            let clicked = false;
+
+            for (let i = 0; i < bbFreeLength; i++) {
+
+                bbFree[i].addEventListener('mousedown', () => clicked = true);
+
+                bbFree[i].addEventListener('mousemove', (event) => {
+                    if (clicked) {
+                        event.target.closest('.cell').classList.add('selected');
+                    }
+                    return true;
+                });
+
+                bbFree[i].addEventListener('mouseup', (event) => {
+                    clicked = false;
+                    return modalBooking.handleShow(event);
+                });
+
+                const bookedInfo = bbFree[i].querySelectorAll('.book-info');
+                if (bookedInfo) {
+                    const bookedInfoLength = bookedInfo.length;
+                    for (let j = 0; j < bookedInfoLength; j++) {
+                        bookedInfo[j].addEventListener('click', () => {
+                            return fetch('modal/modal-booked.html')
+                                .then((response) => response.text())
+                                .then((data) => modalBooked.render(data));
+                        });
+                    }
+                }
+            }
+        }
+    }
+});

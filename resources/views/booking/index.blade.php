@@ -1,0 +1,12 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="breadcrumbs">
+        <ul>
+            <li><a href="/">Главная</a></li>
+            <li><a href="/">Категории номеров</a></li>
+            <li>Номера</li>
+        </ul>
+    </div>
+
+@endsection
