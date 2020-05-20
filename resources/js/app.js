@@ -7,3 +7,4 @@ require('./components/tabs');
 require('./components/header');
 require('./components/tariff-add');
 require('./components/booking');
+require('./components/flash-message');

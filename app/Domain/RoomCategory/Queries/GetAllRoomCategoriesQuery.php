@@ -14,6 +14,6 @@ class GetAllRoomCategoriesQuery
      */
     public function handle()
     {
-        return RoomCategory::with(['rooms'])->get();
+        return RoomCategory::with(['rooms'])->withCount('rooms')->get();
     }
 }

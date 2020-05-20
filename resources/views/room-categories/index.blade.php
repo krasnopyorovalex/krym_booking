@@ -10,6 +10,9 @@
         </ul>
     </div>
 
+    @includeWhen(session()->has('error'), 'layouts.flash-messages.error')
+    @includeWhen(session()->has('info'), 'layouts.flash-messages.info')
+
     <div class="list-box">
         <div class="btn-add-box">
             <a href="{{ route('room_categories.create') }}" class="btn btn-add">
@@ -33,15 +36,15 @@
                     <td>
                         <div class="category-name">
                             <div>{{ $roomCategory->name }}</div>
-                            <a href="#" title="Добавить номер в категорию">
+                            <a href="{{ route('rooms.create', $roomCategory) }}" title="Добавить номер в категорию">
                             <span>
                                 {{ svg('icon-add') }}
                             </span>
                             </a>
                         </div>
                     </td>
-                    <td class="text-right"><div class="badge">10</div></td>
-                    <td class="text-right"><div class="badge">1</div></td>
+                    <td class="text-right"><div class="badge">{{ $roomCategory->rooms_count }}</div></td>
+                    <td class="text-right"><div class="badge">{{ $roomCategory->order }}</div></td>
                     <td>
                         <div class="btn-actions">
                             <div class="btn-actions-item">

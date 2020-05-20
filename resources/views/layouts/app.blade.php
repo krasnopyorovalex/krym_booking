@@ -63,7 +63,7 @@
                             Отчеты
                         </a>
                     </li>
-                    <li class="active">
+                    <li{{ menu_box_active('room') }}>
                         {{ svg('icon-key') }}
                         <a href="{{ route('room_categories.index') }}">
                             Настройка номеров

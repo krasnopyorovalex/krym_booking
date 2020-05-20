@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Domain\RoomCategory\Queries;
 
 use App\RoomCategory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class GetRoomCategoryByUuidQuery
 {
@@ -27,6 +28,12 @@ class GetRoomCategoryByUuidQuery
      */
     public function handle()
     {
-        return RoomCategory::where('id', $this->uuid)->with(['rooms'])->firstOrFail();
+        $roomCategory = RoomCategory::with(['rooms'])->firstWhere('id', $this->uuid);
+
+        if (! $roomCategory) {
+            throw new ModelNotFoundException(__('room_category.model_not_found'));
+        }
+
+        return $roomCategory;
     }
 }

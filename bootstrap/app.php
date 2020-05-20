@@ -41,6 +41,8 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+//$app->useEnvironmentPath("{$app->basePath()}/environments/hotelvireneya");
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

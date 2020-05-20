@@ -11,9 +11,9 @@ use Domain\RoomCategory\Queries\GetAllRoomCategoriesQuery;
 use Domain\RoomCategory\Queries\GetRoomCategoryByUuidQuery;
 use Domain\RoomCategory\Requests\CreateRoomCategoryRequest;
 use Domain\RoomCategory\Requests\UpdateRoomCategoryRequest;
-use DomainException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
 use Illuminate\View\View;
@@ -49,7 +49,7 @@ class RoomCategoryController extends Controller
         $this->dispatch(new CreateRoomCategoryCommand($request));
 
         return redirect(route('room_categories.index'))
-            ->with('message', __('room_category.added'));
+            ->with('info', __('room_category.added'));
     }
 
     /**
@@ -58,7 +58,12 @@ class RoomCategoryController extends Controller
      */
     public function edit(string $uuid)
     {
-        $roomCategory = $this->dispatch(new GetRoomCategoryByUuidQuery($uuid));
+        try {
+            $roomCategory = $this->dispatch(new GetRoomCategoryByUuidQuery($uuid));
+        } catch (ModelNotFoundException $exception) {
+            return redirect(route('room_categories.index'))
+                ->with('error', $exception->getMessage());
+        }
 
         return view('room-categories.edit', [
             'roomCategory' => $roomCategory
@@ -72,10 +77,15 @@ class RoomCategoryController extends Controller
      */
     public function update(UpdateRoomCategoryRequest $request, string $uuid)
     {
-        $this->dispatch(new UpdateRoomCategoryCommand($request, $uuid));
+        try {
+            $this->dispatch(new UpdateRoomCategoryCommand($request, $uuid));
+        } catch (ModelNotFoundException $exception) {
+            return redirect(route('room_categories.index'))
+                ->with('error', $exception->getMessage());
+        }
 
         return redirect(route('room_categories.index'))
-            ->with('message', __('room_category.updated'));
+            ->with('info', __('room_category.updated'));
     }
 
     /**
@@ -86,12 +96,12 @@ class RoomCategoryController extends Controller
     {
         try {
             $this->dispatch(new DeleteRoomCategoryCommand($uuid));
-        } catch (DomainException $exception) {
+        } catch (ModelNotFoundException $exception) {
             return redirect(route('room_categories.index'))
-                ->with('message', $exception->getMessage());
+                ->with('error', $exception->getMessage());
         }
 
         return redirect(route('room_categories.index'))
-            ->with('message', __('room_category.deleted'));
+            ->with('info', __('room_category.deleted'));
     }
 }

@@ -11,6 +11,8 @@
         </ul>
     </div>
 
+    @include('layouts.flash-messages.errors')
+
     <div class="box box-with-tabs">
         <form action="{{ route('room_categories.update', $roomCategory) }}" method="post">
             @csrf

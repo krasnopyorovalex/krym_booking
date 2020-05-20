@@ -26,7 +26,7 @@ class CreateRoomCategoryCommand
     public function handle(): void
     {
         $roomCategory = new RoomCategory;
-        $roomCategory->fill($this->request->all());
+        $roomCategory->fill($this->request->validated());
 
         $roomCategory->save();
     }

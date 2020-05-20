@@ -19,3 +19,12 @@ if (! function_exists('loop_index_by_pagination')) {
         return (int) $page * $paginateStep + $iteration;
     }
 }
+
+
+if (! function_exists('menu_box_active')) {
+    function menu_box_active(string $string): HtmlString {
+        return strpos(request()->path(), $string) !== false
+            ? new HtmlString(' class="active"')
+            : new HtmlString('');
+    }
+}
